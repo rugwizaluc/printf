@@ -1,5 +1,5 @@
-#ifndef HOLBERTON_H
-#define HOLBERTON_H
+#ifndef MAIN_H
+#define MAIN_H
 #include <stdarg.h>
 #include <stdio.h>
 /**
@@ -14,6 +14,7 @@ typedef struct vtype
 	void (*f)();
 } vtype_t;
 int _printf(const char *format, ...);
+<<<<<< HEAD
 void print_char(va_list args);
 void print_int(va_list args);
 void print_float(va_list args);
@@ -45,4 +46,5 @@ void format_b(va_list args, char *buffer, int index);
 void format_r(va_list args, char *buffer, int index);
 void format_R(va_list args, char *buffer, int index);
 #endif 
+
 
