@@ -17,19 +17,17 @@ int _printf(const char *format, ...)
 
 	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i + 1] == 'c')
-		{
-			_putchar(va_arg(str_args, int));
-		}
-		else if (format[i + 1] == 's')
-		{
-			_putchar(va_arg(str_args, int));
-		}
 		if (format[i] != '%')
 		{
 			_putchar(format[i]);
 		}
+		if ((format[i + 1] == 'c' || format[i + 1] == 's') && format[i] == '%')
+		{
+			_putchar(va_arg(str_args, int));
+			i++;
+		}
 		num_char++;
 	}
+	va_end(str_args);
 	return (num_char);
 }
