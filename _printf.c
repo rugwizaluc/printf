@@ -21,7 +21,11 @@ int _printf(const char *format, ...)
 		{
 			_putchar(va_arg(str_args, int));
 		}
-		else if (format[i] != '%')
+		else if (format[i + 1] == 's')
+		{
+			_putchar(va_arg(str_args, int));
+		}
+		if (format[i] != '%')
 		{
 			_putchar(format[i]);
 		}
