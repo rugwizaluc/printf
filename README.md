@@ -1,2 +1,1 @@
-# printf
-ALX printf group project.
+my printf function
