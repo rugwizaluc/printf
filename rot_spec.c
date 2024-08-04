@@ -1,11 +1,11 @@
 #include "main.h"
 /**
- * handle_rot13 - Handles the 'R' specifier (ROT13 encoding)
+ * @handle_rot13 - Handles the 'R' specifier (ROT13 encoding)
  * @args: List of arguments
  * @buffer: Buffer to store characters
  * @index: Index in the buffer
  *
- * Return: Number of characters stored in the buffer
+ * @Return: Number of characters stored in the buffer
  */
 int rot13(const char *input, char *buffer, int *index)
         {      
@@ -23,7 +23,11 @@ int rot13(const char *input, char *buffer, int *index)
 }
 
 int handle_rot13(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify) {
-    char *str = va_arg(args, char *);
+  (void)length_modifier;
+  (void)precision;
+  (void)width;
+  (void)left_justify;
+  char *str = va_arg(args, char *);
     if (str == NULL) {
         const char *null_str = "(null)";
         while (*null_str) {
