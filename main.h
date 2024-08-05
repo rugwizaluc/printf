@@ -2,59 +2,43 @@
 #define MAIN_H
 
 #include <stdarg.h>
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <limits.h>
+#include <unistd.h>
 #include <ctype.h>
 #define BUFFER_SIZE 1024
 
-typedef struct {
-    char specifier;
-    int (*func)(va_list args);
+/**
+ * typedef struct specifier - Defines a structure for handling format specifiers.
+ * @spec: The format specifier character (e.g., 'd' for integer, 's' for string).
+ * @handler: Function pointer to the handler function for the corresponding specifier.
+ */
+typedef struct specifier {
+    char spec;
+    int (*handler)(va_list args, char *buffer, int *index);
 } spec_t;
-
-typedef struct {
-    char specifier;
-  int (*func)(va_list args, char *buffer, int *index);
-} spec_t;
-
-typedef struct {
-    char specifier;
-    int (*func)(va_list args, char *buffer, int *index, char length_modifier, int precision);
-} spec_t;
-
-typedef struct {
-    char specifier;
-  int (*func)(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify);
-} spec_t;
-
-int handle_char(va_list args);
-int handle_string(va_list args);
-int handle_perc(va_list args);
-int handle_binary(va_list args);
+/* Function prototypes */
 int _printf(const char *format, ...);
+
+/* Handler function prototypes */
 int handle_char(va_list args, char *buffer, int *index);
 int handle_string(va_list args, char *buffer, int *index);
 int handle_percent(va_list args, char *buffer, int *index);
+int handle_int(va_list args, char *buffer, int *index);
 int handle_binary(va_list args, char *buffer, int *index);
+int handle_unsigned(va_list args, char *buffer, int *index);
+int handle_octal(va_list args, char *buffer, int *index);
+int handle_hex(va_list args, char *buffer, int *index, int uppercase);
 int handle_pointer(va_list args, char *buffer, int *index);
-void uintToStr(unsigned long num, char *buffer, int base, int uppercase, int *index, int precision);
-int handle_int(va_list args, char *buffer, int *index, char length_modifier, int precision);
-int handle_unsigned(va_list args, char *buffer, int *index, char length_modifier, int precision);
-int handle_octal(va_list args, char *buffer, int *index, char length_modifier, int precision);
-int handle_hex(va_list args, char *buffer, int *index, char length_modifier, int precision, int uppercase);
-void uintToStr(unsigned long number, char *buffer, int base, int uppercase, int *index);
-int handle_int(va_list args, char *buffer, int *index, char length_modifier);
-int handle_unsigned(va_list args, char *buffer, int *index, char length_modifier);
-int handle_octal(va_list args, char *buffer, int *index, char length_modifier);
-int handle_hex(va_list args, char *buffer, int *index, char length_modifier, int uppercase);
-void uintToStr(unsigned long num, char *buffer, int base, int uppercase, int *index, int precision, int width, int left_justify);
-int handle_int(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify);
-int handle_unsigned(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify);
-int handle_octal(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify);
-int handle_hex(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify, int uppercase);
-int rot13(const char *input, char *buffer, int *index);
-int handle_rot13(va_list args, char *buffer, int *index, char length_modifier, int precision, int width, int left_justify);
+int handle_non_printable_string(va_list args, char *buffer, int *index);
+int handle_reverse_string(va_list args, char *buffer, int *index);
+int handle_rot13_string(va_list args, char *buffer, int *index);
+
+/* Helper function prototypes */
+void int_to_str(int n, char *str);
+void uint_to_str(unsigned int n, char *str);
+void hex_to_str(unsigned int n, char *str, int uppercase);
+void ptr_to_str(void *ptr, char *str);
+void str_reverse(char *str);
+void rot13(char *str);
+
 #endif
