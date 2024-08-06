@@ -53,13 +53,13 @@ int handle_percent(va_list args, char *buffer, int *index)
  */
 int handle_int(va_list args, char *buffer, int *index)
 {
+    int i = 0;
     int n = va_arg(args, int);
     char *str = malloc(12 * sizeof(char));
     if (str == NULL)
         return -1;
     int_to_str(n, str);
-    int i = 0;
-
+    
     while (str[i])
     {
         buffer[(*index)++] = str[i++];
@@ -72,3 +72,4 @@ int handle_int(va_list args, char *buffer, int *index)
     free(str);
     return i;
 }
+

@@ -10,7 +10,7 @@ int handle_binary(va_list args, char *buffer, int *index)
     unsigned int n = va_arg(args, unsigned int);
     char str[33];
     int i = 0;
-
+    int j;
     while (n > 0)
     {
         str[i++] = (n % 2) + '0';
@@ -20,7 +20,7 @@ int handle_binary(va_list args, char *buffer, int *index)
         str[i++] = '0';
     str[i] = '\0';
 
-    for (int j = i - 1; j >= 0; j--)
+    for (j = i - 1; j >= 0; j--)
     {
         buffer[(*index)++] = str[j];
         if (*index >= BUFFER_SIZE - 1)
@@ -42,8 +42,9 @@ int handle_unsigned(va_list args, char *buffer, int *index)
 {
     unsigned int n = va_arg(args, unsigned int);
     char str[20];
-    uint_to_str(n, str);
     int i = 0;
+    
+    uint_to_str(n, str);
 
     while (str[i])
     {
@@ -68,14 +69,14 @@ int handle_octal(va_list args, char *buffer, int *index)
     unsigned int n = va_arg(args, unsigned int);
     char str[12];
     int i = 0;
-
+    int j;
     do {
         str[i++] = (n % 8) + '0';
         n /= 8;
     } while (n > 0);
     str[i] = '\0';
 
-    for (int j = i - 1; j >= 0; j--)
+    for (j = i - 1; j >= 0; j--)
     {
         buffer[(*index)++] = str[j];
         if (*index >= BUFFER_SIZE - 1)
@@ -88,18 +89,47 @@ int handle_octal(va_list args, char *buffer, int *index)
     return i;
 }
 /**
- * handle_hex - Processes an unsigned integer argument and adds its hexadecimal representation to the buffer.
+ * handle_hex_lower - Processes an unsigned integer argument and adds its hexadecimal representation to the buffer.
  * @args: The variadic arguments list.
  * @buffer: The buffer where the resulting string will be stored.
  * @index: Pointer to the current index in the buffer.
  * @uppercase: Flag indicating if hexadecimal letters should be uppercase.
  */
-int handle_hex(va_list args, char *buffer, int *index, int uppercase)
+int handle_hex_lower(va_list args, char *buffer, int *index)
 {
     unsigned int n = va_arg(args, unsigned int);
     char str[20];
-    hex_to_str(n, str, uppercase);
     int i = 0;
+
+    hex_to_str(n, str, 0);
+    
+    while (str[i])
+    {
+        buffer[(*index)++] = str[i++];
+        if (*index >= BUFFER_SIZE - 1)
+        {
+            write(1, buffer, *index);
+            *index = 0;
+        }
+    }
+
+    return i;
+}
+
+/**
+ * handle_hex_upper- Processes an unsigned integer argument and adds its hexadecimal representation to the buffer.
+ * @args: The variadic arguments list.
+ * @buffer: The buffer where the resulting string will be stored.
+ * @index: Pointer to the current index in the buffer.
+ * @uppercase: Flag indicating if hexadecimal letters should be uppercase.
+ */
+int handle_hex_upper(va_list args, char *buffer, int *index)
+{
+    unsigned int n = va_arg(args, unsigned int);
+    char str[20];
+    int i = 0;
+
+    hex_to_str(n, str, 1);
 
     while (str[i])
     {
@@ -123,9 +153,10 @@ int handle_pointer(va_list args, char *buffer, int *index)
 {
     void *ptr = va_arg(args, void *);
     char str[20];
-    ptr_to_str(ptr, str);
     int i = 0;
 
+    ptr_to_str(ptr, str);
+    
     while (str[i])
     {
         buffer[(*index)++] = str[i++];
@@ -148,15 +179,16 @@ int handle_pointer(va_list args, char *buffer, int *index)
 int handle_non_printable_string(va_list args, char *buffer, int *index)
 {
     char *str = va_arg(args, char *);
-    int i = 0,
     char hex[5] = "\\x00";
+    int i = 0;
+    int j;
 
     while (str[i])
     {
         if ((str[i] > 0 && str[i] < 32) || str[i] >= 127)
         {
             hex_to_str((unsigned int)str[i], hex + 2, 1);
-            for (int j = 0; hex[j]; j++)
+            for (j = 0; hex[j]; j++)
             {
                 buffer[(*index)++] = hex[j];
                 if (*index >= BUFFER_SIZE - 1)
@@ -190,11 +222,12 @@ int handle_reverse_string(va_list args, char *buffer, int *index)
 {
     char *str = va_arg(args, char *);
     int len = 0;
-
+    int i;
+    
     while (str[len])
         len++;
 
-    for (int i = len - 1; i >= 0; i--)
+    for (i = len - 1; i >= 0; i--)
     {
         buffer[(*index)++] = str[i];
         if (*index >= BUFFER_SIZE - 1)
@@ -203,7 +236,6 @@ int handle_reverse_string(va_list args, char *buffer, int *index)
             *index = 0;
         }
     }
-
     return len;
 }
 /**
@@ -227,7 +259,6 @@ int handle_rot13_string(va_list args, char *buffer, int *index)
 
     rot13(rot13_str);
 
-    i = 0;
     while (rot13_str[i])
     {
         buffer[(*index)++] = rot13_str[i++];
@@ -240,3 +271,5 @@ int handle_rot13_string(va_list args, char *buffer, int *index)
 
     return i;
 }
+
+

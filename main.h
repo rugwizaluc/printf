@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <string.h>
 #define BUFFER_SIZE 1024
 
 /**
@@ -27,7 +28,8 @@ int handle_int(va_list args, char *buffer, int *index);
 int handle_binary(va_list args, char *buffer, int *index);
 int handle_unsigned(va_list args, char *buffer, int *index);
 int handle_octal(va_list args, char *buffer, int *index);
-int handle_hex(va_list args, char *buffer, int *index, int uppercase);
+int handle_hex_lower(va_list args, char *buffer, int *index);
+int handle_hex_upper(va_list args, char *buffer, int *index);
 int handle_pointer(va_list args, char *buffer, int *index);
 int handle_non_printable_string(va_list args, char *buffer, int *index);
 int handle_reverse_string(va_list args, char *buffer, int *index);

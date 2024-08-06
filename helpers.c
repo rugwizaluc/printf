@@ -1,6 +1,5 @@
 #include "main.h"
 #include <string.h>
-
 /**
  * int_to_str - Converts an integer to a string.
  * @n: The integer to be converted.
@@ -120,9 +119,9 @@ void hex_to_str(unsigned int n, char *str, int uppercase)
  */
 void ptr_to_str(void *ptr, char *str)
 {
-    unsigned long int n = (unsigned long int)ptr;
     int i = 0, temp, len = 0;
-
+    unsigned long int n = (unsigned long int)ptr;
+    
     str[i++] = '0';
     str[i++] = 'x';
 
@@ -130,9 +129,10 @@ void ptr_to_str(void *ptr, char *str)
         temp = (n % 16);
         if (temp < 10)
             str[i++] = temp + '0';
-        else
+        else {
             str[i++] = (temp - 10) + 'a';
-            n /= 16;
+             }
+      n /= 16;
     } while (n > 0);
 
     str[i] = '\0';
@@ -156,12 +156,15 @@ void ptr_to_str(void *ptr, char *str)
  */
 void str_reverse(char *str)
 {
-    int len = 0, temp;
+  int i;
+  int len = 0; 
+  int temp;
+  
 
     while (str[len])
         len++;
 
-    for (int i = 0; i < len / 2; i++)
+    for (i = 0; i < len / 2; i++)
     {
         temp = str[i];
         str[i] = str[len - i - 1];
@@ -178,7 +181,8 @@ void str_reverse(char *str)
  */
 void rot13(char *str)
 {
-    for (int i = 0; str[i]; i++)
+    int i;
+    for (i = 0; str[i]; i++)
     {
         if ((str[i] >= 'a' && str[i] <= 'z'))
             str[i] = ((str[i] - 'a' + 13) % 26) + 'a';
@@ -186,3 +190,4 @@ void rot13(char *str)
             str[i] = ((str[i] - 'A' + 13) % 26) + 'A';
     }
 }
+
